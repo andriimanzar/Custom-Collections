@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class MyArrayList<T> implements List<T> {
 
+    public static final String INVALID_CAPACITY_MESSAGE = "Initial capacity must be greater than 0";
     private static final int DEFAULT_CAPACITY = 10;
     private Object[] elements;
     private int size;
@@ -66,7 +67,7 @@ public class MyArrayList<T> implements List<T> {
 
     private void validateCapacity(int capacity) {
         if (capacity <= 0) {
-            throw new IllegalArgumentException("Initial capacity must be greater than 0");
+            throw new IllegalArgumentException(INVALID_CAPACITY_MESSAGE);
         }
     }
 }

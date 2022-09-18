@@ -6,6 +6,8 @@ import static java.util.Objects.requireNonNull;
 
 public class MyHashMap<K, V> implements Map<K, V> {
 
+    public static final String INVALID_CAPACITY_MESSAGE = "Initial capacity must be greater than 0";
+
     private static final int DEFAULT_CAPACITY = 8;
     private static final float RESIZE_THRESHOLD = 1.0f;
     private Node<K, V>[] table;
@@ -140,7 +142,7 @@ public class MyHashMap<K, V> implements Map<K, V> {
 
     private void validateCapacity(int capacity) {
         if (capacity <= 0) {
-            throw new IllegalArgumentException("Initial capacity must be greater than 0");
+            throw new IllegalArgumentException(INVALID_CAPACITY_MESSAGE);
         }
     }
 
