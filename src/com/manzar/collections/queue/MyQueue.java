@@ -9,8 +9,8 @@ public class MyQueue<T> implements Queue<T> {
     private Node<T> tail;
 
     private static class Node<T> {
-        T value;
-        Node<T> next;
+        private T value;
+        private Node<T> next;
 
         public Node(T value) {
             this.value = value;
