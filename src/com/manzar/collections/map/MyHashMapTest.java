@@ -12,6 +12,7 @@ public class MyHashMapTest {
         System.out.println(map.get("someNumber"));
 
         map.remove("second");
+        System.out.println(map.get("second"));
 
         System.out.println("~~~~~~~~~~~~~~~~~~~");
 

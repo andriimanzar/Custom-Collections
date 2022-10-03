@@ -22,28 +22,60 @@ public class MyHashMap<K, V> implements Map<K, V> {
         this.table = new Node[DEFAULT_CAPACITY];
     }
 
-
-    private static class Node<K, V> {
-
-        private final K key;
-        private V value;
-        private Node<K, V> next;
-
-        public Node(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
-    }
-
-    public static int calculateIndex(Object key, int tableCapacity) {
-        var hash = key.hashCode() ^ (key.hashCode() >> 16);
-        return hash & (tableCapacity - 1);
-    }
-
     @Override
     public V put(K key, V value) {
         resizeIfNeeded();
         return addToTable(table, key, value);
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+
+    @Override
+    public V get(K key) {
+        int index = calculateIndex(requireNonNull(key), table.length);
+        Node<K, V> currentNode = table[index];
+        while (currentNode != null) {
+            if (currentNode.key.equals(key)) {
+                return currentNode.value;
+            }
+            currentNode = currentNode.next;
+        }
+        return null;
+    }
+
+    @Override
+    public V remove(K key) {
+        int index = calculateIndex(requireNonNull(key), table.length);
+        Node<K, V> currentNode = table[index];
+        if (currentNode != null) {
+            if (currentNode.key.equals(key)) {
+                return removeNode(currentNode, key, index);
+            }
+            while (currentNode.next != null) {
+                if (currentNode.next.key.equals(key)) {
+                    return removeNode(currentNode.next, key, index);
+                }
+                currentNode = currentNode.next;
+            }
+        }
+        return null;
+    }
+
+    public void clear() {
+        Node<K, V>[] tab = table;
+        if (size > 0) {
+            size = 0;
+            Arrays.fill(tab, null);
+        }
+    }
+
+    private static int calculateIndex(Object key, int tableCapacity) {
+        var hash = key.hashCode() ^ (key.hashCode() >> 16);
+        return hash & (tableCapacity - 1);
     }
 
     private void resizeIfNeeded() {
@@ -90,60 +122,34 @@ public class MyHashMap<K, V> implements Map<K, V> {
         return null;
     }
 
-    @Override
-    public V get(K key) {
-        int index = calculateIndex(requireNonNull(key), table.length);
-        Node<K, V> currentNode = table[index];
-        while (currentNode != null) {
-            if (currentNode.key.equals(key)) {
-                return currentNode.value;
-            }
-            currentNode = currentNode.next;
-        }
-        return null;
-    }
-
-    @Override
-    public V remove(K key) {
-        int index = calculateIndex(requireNonNull(key), table.length);
-        Node<K, V> currentNode = table[index];
-        if (currentNode != null) {
-            if (currentNode.key.equals(key)) {
-                V value = currentNode.value;
-                table[index] = currentNode.next;
-                size--;
-                return value;
-            }
-            while (currentNode.next != null) {
-                if (currentNode.next.key.equals(key)) {
-                    V value = currentNode.next.value;
-                    currentNode.next = currentNode.next.next;
-                    size--;
-                    return value;
-                }
-                currentNode = currentNode.next;
-            }
-        }
-        return null;
-    }
-
-    public void clear() {
-        Node<K, V>[] tab = table;
-        if (size > 0) {
-            size = 0;
-            Arrays.fill(tab, null);
-        }
-    }
-
-    @Override
-    public int size() {
-        return size;
-    }
 
     private void validateCapacity(int capacity) {
         if (capacity <= 0) {
             throw new IllegalArgumentException(INVALID_CAPACITY_MESSAGE);
         }
     }
+
+    private V removeNode(Node<K, V> currentNode, K key, int index) {
+        if (currentNode.key.equals(key)) {
+            V value = currentNode.value;
+            table[index] = currentNode.next;
+            size--;
+            return value;
+        }
+        return null;
+    }
+
+    private static class Node<K, V> {
+
+        private final K key;
+        private V value;
+        private Node<K, V> next;
+
+        public Node(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
 
 }

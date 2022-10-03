@@ -10,17 +10,6 @@ public class MyLinkedList<T> implements List<T> {
     private Node<T> head;
     private Node<T> tail;
 
-    private static class Node<T> {
-
-        private T value;
-        private Node<T> prev;
-        private Node<T> next;
-
-        public Node(T value) {
-            this.value = value;
-        }
-    }
-
     @Override
     public boolean add(T t) {
         Node<T> newNode = new Node<>(t);
@@ -113,5 +102,16 @@ public class MyLinkedList<T> implements List<T> {
             }
         }
         return result;
+    }
+
+    private static class Node<T> {
+
+        private T value;
+        private Node<T> prev;
+        private Node<T> next;
+
+        public Node(T value) {
+            this.value = value;
+        }
     }
 }

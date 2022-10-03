@@ -8,15 +8,6 @@ public class MyQueue<T> implements Queue<T> {
     private Node<T> head;
     private Node<T> tail;
 
-    private static class Node<T> {
-        private T value;
-        private Node<T> next;
-
-        public Node(T value) {
-            this.value = value;
-        }
-    }
-
     @Override
     public int size() {
         return size;
@@ -64,6 +55,19 @@ public class MyQueue<T> implements Queue<T> {
         return result;
     }
 
+    @Override
+    public void clear() {
+        for (Node<T> tmp = head; tmp != null; ) {
+            Node<T> next = tmp.next;
+            tmp.next = null;
+            tmp.value = null;
+            tmp = next;
+        }
+        head = null;
+        size = 0;
+    }
+
+
     private void removeNode(Node<T> nodeToRemove, int index) {
         Node<T> nextNode = nodeToRemove.next;
         Node<T> previousNode = node(index - 1);
@@ -79,19 +83,6 @@ public class MyQueue<T> implements Queue<T> {
         size--;
     }
 
-
-    @Override
-    public void clear() {
-        for (Node<T> tmp = head; tmp != null; ) {
-            Node<T> next = tmp.next;
-            tmp.next = null;
-            tmp.value = null;
-            tmp = next;
-        }
-        head = null;
-        size = 0;
-    }
-
     private Node<T> node(int index) {
         if (index == size - 1) {
             return tail;
@@ -103,4 +94,14 @@ public class MyQueue<T> implements Queue<T> {
             return result;
         }
     }
+
+    private static class Node<T> {
+        private T value;
+        private Node<T> next;
+
+        public Node(T value) {
+            this.value = value;
+        }
+    }
+
 }

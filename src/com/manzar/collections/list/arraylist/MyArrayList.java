@@ -2,6 +2,7 @@ package com.manzar.collections.list.arraylist;
 
 import com.manzar.collections.list.List;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class MyArrayList<T> implements List<T> {
@@ -32,9 +33,7 @@ public class MyArrayList<T> implements List<T> {
     public T remove(int index) {
         Objects.checkIndex(index, size);
         T deletedElement = (T) elements[index];
-        for (int i = index; i < size; i++) {
-            elements[i] = elements[i + 1];
-        }
+        elements = Arrays.copyOfRange(elements, index-1, size);
         size--;
         return deletedElement;
     }
